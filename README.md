@@ -1,0 +1,39 @@
+# AI Trading Terminal
+
+Real-time crypto & stock trading dashboard with AI-powered signals, paper trading, and a client-side backtester. Pure browser + Vercel serverless &mdash; zero backend.
+
+## Architecture
+
+| Layer            | Tech                                                      | Notes |
+| ---------------- | --------------------------------------------------------- | ----- |
+| Frontend         | Next.js 16 + React 19 + Tailwind 4                        | Deployed to Vercel Hobby |
+| Charts           | [`lightweight-charts`](https://github.com/tradingview/lightweight-charts) | TradingView's open-source candle library |
+| Live crypto data | Binance public REST + WebSocket                           | Browser-direct, no key, CORS-friendly |
+| Stock data       | Yahoo Finance v8 chart endpoint, proxied via Vercel route | Yahoo blocks browser CORS |
+| AI signals       | OpenAI gpt-4o-mini, called from a Vercel API route        | JSON-schema response, throttled per (symbol, 5-min bucket) |
+| Persistence      | `localStorage`                                            | Per-browser paper-trading state |
+
+No Render, no Postgres, no auth. Cold-start cost: zero.
+
+## Status
+
+Step 1 of 12 &mdash; sidebar/topbar shell.
+
+See the [12-step plan](#) (lives in conversation history) for the rollout order.
+
+## Local dev
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+Then open <http://localhost:3000>.
+
+## Stack pillars
+
+- **Real-time**: Binance WebSocket pushes 1-min kline updates and order-book depth direct to the browser. No server in the hot path.
+- **AI signals**: A serverless route bills OpenAI on miss; a 5-min `localStorage` TTL on the client keeps requests bounded.
+- **Browser-side backtester**: Iterates historical klines client-side. Fast enough for 90-day intraday windows on a modern laptop.
+- **Paper trading**: All positions, cash, and order history live in `localStorage`. Reset is one click. No accounts, no signup.
