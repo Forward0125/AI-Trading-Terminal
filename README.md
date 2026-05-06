@@ -4,6 +4,8 @@ Real-time crypto trading dashboard with AI-powered signals, paper trading, and a
 
 **Live demo**: <https://ai-trading-terminal-three.vercel.app/>
 
+
+
 ## What's in it
 
 | Feature | Where |
