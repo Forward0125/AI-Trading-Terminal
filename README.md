@@ -17,7 +17,7 @@ No Render, no Postgres, no auth. Cold-start cost: zero.
 
 ## Status
 
-Step 10 of 12 &mdash; Backtesting page UI (strategy + symbol + granularity picker, equity chart, stats grid, trades table) + dashboard summary card.
+Step 11 of 12 &mdash; Portfolio Analytics page (KPI strip, allocation, AI signal alerts, risk metrics, active positions table).
 
 > **Vercel env var required:** `OPENAI_API_KEY` (server-side, not `NEXT_PUBLIC_*`). Set it in your Vercel project settings or the card shows "Signal request failed".
 
