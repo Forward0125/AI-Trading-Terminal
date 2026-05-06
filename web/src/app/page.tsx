@@ -1,14 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { BacktestSummaryCard } from "@/components/BacktestSummaryCard";
 import { CandleChart } from "@/components/CandleChart";
+import { Card } from "@/components/Card";
 import { MarketStrip } from "@/components/MarketStrip";
 import { OrderBookPanel } from "@/components/OrderBookPanel";
 import { PaperAccountPanel } from "@/components/PaperAccountPanel";
 import { SignalCard } from "@/components/SignalCard";
 import { SymbolSwitcher } from "@/components/SymbolSwitcher";
 import { TradeHistoryPanel } from "@/components/TradeHistoryPanel";
-import { Card } from "@/components/Card";
 import { useCandles } from "@/hooks/useCandles";
 import { bollinger, ema, lastDefined, macd, rsi } from "@/lib/indicators";
 import type { ProductId } from "@/lib/market";
@@ -78,9 +79,7 @@ export default function Page() {
         <PaperAccountPanel productId={symbol} />
       </div>
 
-      <Card title="Backtesting Insights">
-        <div className="p-6 text-sm text-muted">Coming step 10</div>
-      </Card>
+      <BacktestSummaryCard />
     </div>
   );
 }

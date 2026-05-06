@@ -17,7 +17,7 @@ No Render, no Postgres, no auth. Cold-start cost: zero.
 
 ## Status
 
-Step 9 of 12 &mdash; Backtester engine (SMA-cross / RSI-revert / MACD-trend, equity curve, Sharpe, drawdown, trades).
+Step 10 of 12 &mdash; Backtesting page UI (strategy + symbol + granularity picker, equity chart, stats grid, trades table) + dashboard summary card.
 
 > **Vercel env var required:** `OPENAI_API_KEY` (server-side, not `NEXT_PUBLIC_*`). Set it in your Vercel project settings or the card shows "Signal request failed".
 
