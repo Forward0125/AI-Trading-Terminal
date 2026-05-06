@@ -17,7 +17,7 @@ No Render, no Postgres, no auth. Cold-start cost: zero.
 
 ## Status
 
-Step 2 of 12 &mdash; market data layer (Coinbase REST + WebSocket).
+Step 3 of 12 &mdash; indicators engine (SMA, EMA, RSI, MACD, Bollinger).
 
 See the [12-step plan](#) (lives in conversation history) for the rollout order.
 
