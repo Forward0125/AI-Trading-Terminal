@@ -17,7 +17,7 @@ No Render, no Postgres, no auth. Cold-start cost: zero.
 
 ## Status
 
-Step 7 of 12 &mdash; Order Book + Trade History panels (live level2 + matches feeds).
+Step 8 of 12 &mdash; Paper trading (localStorage account, buy/sell modal, positions panel with live P/L, reset).
 
 > **Vercel env var required:** `OPENAI_API_KEY` (server-side, not `NEXT_PUBLIC_*`). Set it in your Vercel project settings or the card shows "Signal request failed".
 

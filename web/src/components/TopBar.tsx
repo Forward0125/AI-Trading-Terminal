@@ -2,6 +2,8 @@
 
 import { ChevronDown } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { usePaperAccount } from "@/hooks/usePaperAccount";
+import { formatUSD } from "@/lib/paper";
 
 const TITLES: Record<string, string> = {
   "/":            "Live Market Dashboard",
@@ -14,7 +16,8 @@ const TITLES: Record<string, string> = {
 
 export function TopBar() {
   const pathname = usePathname();
-  const title = TITLES[pathname] ?? "AI Trading Terminal";
+  const account  = usePaperAccount();
+  const title    = TITLES[pathname] ?? "AI Trading Terminal";
 
   return (
     <header className="h-14 px-6 border-b border-line flex items-center justify-between bg-page">
@@ -30,8 +33,8 @@ export function TopBar() {
         </div>
 
         <div className="hidden md:flex items-center gap-2 text-sm">
-          <span className="text-muted">Balance:</span>
-          <span className="font-mono tabular-nums">$125,400.50</span>
+          <span className="text-muted">Cash:</span>
+          <span className="font-mono tabular-nums">{formatUSD(account.cash)}</span>
           <span className="text-dim text-xs">(Paper)</span>
         </div>
 
