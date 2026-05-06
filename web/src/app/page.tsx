@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { BacktestSummaryCard } from "@/components/BacktestSummaryCard";
 import { CandleChart } from "@/components/CandleChart";
 import { Card } from "@/components/Card";
@@ -12,11 +13,25 @@ import { SymbolSwitcher } from "@/components/SymbolSwitcher";
 import { TradeHistoryPanel } from "@/components/TradeHistoryPanel";
 import { useCandles } from "@/hooks/useCandles";
 import { bollinger, ema, lastDefined, macd, rsi } from "@/lib/indicators";
-import type { ProductId } from "@/lib/market";
+import { isSupported, type ProductId } from "@/lib/market";
 import type { SignalSnapshot } from "@/lib/signals";
 
 export default function Page() {
-  const [symbol, setSymbol] = useState<ProductId>("BTC-USD");
+  // useSearchParams forces a CSR bailout, so wrap the whole dashboard
+  // in a Suspense boundary per Next.js 16 conventions.
+  return (
+    <Suspense fallback={null}>
+      <Dashboard />
+    </Suspense>
+  );
+}
+
+function Dashboard() {
+  const params  = useSearchParams();
+  const initial = params?.get("symbol");
+  const [symbol, setSymbol] = useState<ProductId>(
+    initial && isSupported(initial) ? initial : "BTC-USD",
+  );
   const { candles, loading } = useCandles(symbol, 60);
 
   // Derive every indicator from `candles.close`. useMemo keeps these

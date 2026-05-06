@@ -42,8 +42,10 @@ export interface SignalSnapshot {
   bbL:        number | null;
 }
 
-const CACHE_PREFIX = "ait:signal:";
-const TTL_MS       = 5 * 60 * 1000;
+const CACHE_PREFIX  = "ait:signal:";
+const HISTORY_KEY   = "ait:signal:history";
+const HISTORY_MAX   = 100;
+const TTL_MS        = 5 * 60 * 1000;
 
 function cacheKey(symbol: ProductId): string {
   return CACHE_PREFIX + symbol;
@@ -72,6 +74,51 @@ function writeCache(sig: TradingSignal): void {
   } catch {
     // Quota or disabled storage — silently ignore. Cache is a perf hint, not correctness.
   }
+  pushSignalHistory(sig);
+}
+
+// ─── Signal history (append-only timeline) ────────────────────────
+
+const historyListeners = new Set<() => void>();
+let cachedHistory: TradingSignal[] | null = null;
+
+export function loadSignalHistory(): TradingSignal[] {
+  if (cachedHistory) return cachedHistory;
+  if (typeof localStorage === "undefined") return [];
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    cachedHistory = raw ? (JSON.parse(raw) as TradingSignal[]) : [];
+  } catch {
+    cachedHistory = [];
+  }
+  return cachedHistory;
+}
+
+function pushSignalHistory(sig: TradingSignal): void {
+  const list = loadSignalHistory().slice();
+  // Drop a same-symbol duplicate if its generatedAt matches (cache replays).
+  const idx = list.findIndex((s) => s.symbol === sig.symbol && s.generatedAt === sig.generatedAt);
+  if (idx >= 0) list.splice(idx, 1);
+  list.unshift(sig);
+  if (list.length > HISTORY_MAX) list.length = HISTORY_MAX;
+  cachedHistory = list;
+  if (typeof localStorage !== "undefined") {
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); } catch { /* quota */ }
+  }
+  for (const fn of historyListeners) fn();
+}
+
+export function clearSignalHistory(): void {
+  cachedHistory = [];
+  if (typeof localStorage !== "undefined") {
+    localStorage.removeItem(HISTORY_KEY);
+  }
+  for (const fn of historyListeners) fn();
+}
+
+export function subscribeSignalHistory(fn: () => void): () => void {
+  historyListeners.add(fn);
+  return () => { historyListeners.delete(fn); };
 }
 
 export interface FetchOptions {

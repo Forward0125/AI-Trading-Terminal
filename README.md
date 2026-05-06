@@ -16,6 +16,8 @@ Real-time crypto trading dashboard with AI-powered signals, paper trading, and a
 | Portfolio analytics: KPI strip, allocation, signal alerts feed, risk metrics, active positions table with mini AI signal bars | `/portfolio` |
 | Yahoo Finance proxy for AAPL/SPY/TSLA/MSFT/GOOGL/NVDA/AMZN/META | `/api/stocks/{symbol}/klines` (route exists; UI integration deferred to v2) |
 | Settings: paper-account stats, reset, cache management | `/settings` |
+| Market Overview watchlist with live last + 24h % + sparklines | `/market` |
+| AI Signal history timeline (per-browser, last 100) | `/signals` |
 
 ## Architecture
 

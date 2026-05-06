@@ -22,11 +22,13 @@ export {
 export type { SymbolInfo } from "./symbols";
 
 export {
+  get24hStats,
   getCandles,
   getOrderBook,
   getRecentTrades,
   getTicker,
 } from "./coinbase-rest";
+export type { MarketStats } from "./coinbase-rest";
 
 export {
   subscribeLevel2,

@@ -92,6 +92,42 @@ export async function getTicker(productId: ProductId): Promise<Ticker> {
   };
 }
 
+interface CoinbaseStatsResponse {
+  open:    string;
+  high:    string;
+  low:     string;
+  last:    string;
+  volume:  string;
+}
+
+export interface MarketStats {
+  open:      number;
+  high:      number;
+  low:       number;
+  last:      number;
+  volume:    number;
+  change:    number;   // last - open
+  changePct: number;   // (last - open) / open
+}
+
+/** 24-hour rolling stats. One REST call instead of inferring from
+ *  a candle window — the headline %-change badge needs this. */
+export async function get24hStats(productId: ProductId): Promise<MarketStats> {
+  const s = await getJson<CoinbaseStatsResponse>(`/products/${productId}/stats`);
+  const open = +s.open;
+  const last = +s.last;
+  const change = last - open;
+  return {
+    open,
+    high:      +s.high,
+    low:       +s.low,
+    last,
+    volume:    +s.volume,
+    change,
+    changePct: open > 0 ? change / open : 0,
+  };
+}
+
 interface CoinbaseTradeResponse {
   time:     string;  // ISO
   trade_id: number;
