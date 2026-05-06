@@ -17,7 +17,7 @@ No Render, no Postgres, no auth. Cold-start cost: zero.
 
 ## Status
 
-Step 3 of 12 &mdash; indicators engine (SMA, EMA, RSI, MACD, Bollinger).
+Step 4 of 12 &mdash; Live Market Dashboard wired to Coinbase, candles + EMA + Bollinger overlay, RSI/MACD subpanels.
 
 See the [12-step plan](#) (lives in conversation history) for the rollout order.
 
