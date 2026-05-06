@@ -5,7 +5,7 @@ export default function Page() {
     <div className="space-y-6">
       <Card title="BTC/USD &middot; 1H">
         <div className="aspect-[16/7] flex items-center justify-center text-muted text-sm">
-          Candlestick chart &mdash; Binance live ticks land here in step 4
+          Candlestick chart &mdash; Coinbase live ticks land here in step 4
         </div>
       </Card>
 
