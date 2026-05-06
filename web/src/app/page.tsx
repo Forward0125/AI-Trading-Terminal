@@ -4,10 +4,12 @@ import { useMemo, useState } from "react";
 import { Card } from "@/components/Card";
 import { CandleChart } from "@/components/CandleChart";
 import { MarketStrip } from "@/components/MarketStrip";
+import { SignalCard } from "@/components/SignalCard";
 import { SymbolSwitcher } from "@/components/SymbolSwitcher";
 import { useCandles } from "@/hooks/useCandles";
-import { bollinger, ema, macd, rsi } from "@/lib/indicators";
+import { bollinger, ema, lastDefined, macd, rsi } from "@/lib/indicators";
 import type { ProductId } from "@/lib/market";
+import type { SignalSnapshot } from "@/lib/signals";
 
 export default function Page() {
   const [symbol, setSymbol] = useState<ProductId>("BTC-USD");
@@ -20,6 +22,22 @@ export default function Page() {
   const r14    = useMemo(() => rsi(closes, 14),       [closes]);
   const m      = useMemo(() => macd(closes),          [closes]);
   const bb     = useMemo(() => bollinger(closes, 20, 2), [closes]);
+
+  // Snapshot fed to the AI Signals card. The hook only re-fetches on
+  // symbol change, so the per-tick churn here is harmless.
+  const signalSnap: SignalSnapshot | null = useMemo(() => {
+    if (closes.length === 0) return null;
+    return {
+      symbol,
+      lastClose:  closes[closes.length - 1],
+      ema12:      lastDefined(ema12),
+      rsi:        lastDefined(r14),
+      macd:       lastDefined(m.macd),
+      macdSignal: lastDefined(m.signal),
+      bbU:        lastDefined(bb.upper),
+      bbL:        lastDefined(bb.lower),
+    };
+  }, [symbol, closes, ema12, r14, m, bb]);
 
   return (
     <div className="space-y-6">
@@ -48,9 +66,7 @@ export default function Page() {
       </Card>
 
       <div className="grid lg:grid-cols-2 gap-6">
-        <Card title="AI Signals & Analytics">
-          <div className="p-6 text-sm text-muted">Coming step 6</div>
-        </Card>
+        <SignalCard snapshot={signalSnap} />
         <Card title="Backtesting Insights">
           <div className="p-6 text-sm text-muted">Coming step 10</div>
         </Card>

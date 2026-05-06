@@ -17,9 +17,9 @@ No Render, no Postgres, no auth. Cold-start cost: zero.
 
 ## Status
 
-Step 5 of 12 &mdash; AI Signals API (Vercel route &rarr; gpt-4o-mini structured output, 5-min localStorage cache).
+Step 6 of 12 &mdash; AI Signals card UI (LONG/SHORT/NEUTRAL pill, confidence bar, target + stop, rationale, refresh-with-cooldown).
 
-> **Vercel env var required:** `OPENAI_API_KEY` (server-side, not `NEXT_PUBLIC_*`). Set it in your Vercel project settings before the next deploy or `/api/signals` returns 500.
+> **Vercel env var required:** `OPENAI_API_KEY` (server-side, not `NEXT_PUBLIC_*`). Set it in your Vercel project settings or the card shows "Signal request failed".
 
 See the [12-step plan](#) (lives in conversation history) for the rollout order.
 
