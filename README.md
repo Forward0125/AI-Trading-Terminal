@@ -17,7 +17,9 @@ No Render, no Postgres, no auth. Cold-start cost: zero.
 
 ## Status
 
-Step 4 of 12 &mdash; Live Market Dashboard wired to Coinbase, candles + EMA + Bollinger overlay, RSI/MACD subpanels.
+Step 5 of 12 &mdash; AI Signals API (Vercel route &rarr; gpt-4o-mini structured output, 5-min localStorage cache).
+
+> **Vercel env var required:** `OPENAI_API_KEY` (server-side, not `NEXT_PUBLIC_*`). Set it in your Vercel project settings before the next deploy or `/api/signals` returns 500.
 
 See the [12-step plan](#) (lives in conversation history) for the rollout order.
 
